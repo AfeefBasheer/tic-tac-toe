@@ -25,8 +25,9 @@ function printMatrix(mat) {
 
     string = string + "\n";
   }
-  string=string.trimEnd();
-  string = string +"\n"+ " └─────┴─────┴─────┘";
+  string = string.trimEnd();
+  string = string + "\n" + " └─────┴─────┴─────┘";
   return string;
 }
 console.log(printMatrix(mat));
+
