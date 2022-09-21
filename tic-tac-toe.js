@@ -8,4 +8,3 @@ function createMatrix() {
     }
   }
 }
-console.log(createMatrix()); 
