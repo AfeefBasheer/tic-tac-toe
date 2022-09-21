@@ -12,7 +12,7 @@ function createMatrix() {
   }
 }
 
-createMatrix();
+
 
 function printMatrix(mat) {
   let string = " ┌─────┬─────┬─────┐" + "\n";
@@ -30,7 +30,7 @@ function printMatrix(mat) {
   }
   string = string.trimEnd();
   string = string + "\n" + " └─────┴─────┴─────┘";
-  return string;
+  console.log(string);
 }
-console.log(printMatrix(mat));
+
 
