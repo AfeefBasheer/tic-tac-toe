@@ -1,5 +1,8 @@
 let states = ["X", "O", "-"];
 let mat = [];
+createMatrix();
+
+
 function createMatrix() {
   for (let i = 0; i < 3; i++) {
     mat[i] = [];
