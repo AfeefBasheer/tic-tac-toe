@@ -2,7 +2,6 @@ let states = ["X", "O", "-"];
 let mat = [];
 createMatrix();
 
-
 function createMatrix() {
   for (let i = 0; i < 3; i++) {
     mat[i] = [];
@@ -11,8 +10,6 @@ function createMatrix() {
     }
   }
 }
-
-
 
 function printMatrix(mat) {
   let string = " ┌─────┬─────┬─────┐" + "\n";
@@ -31,6 +28,18 @@ function printMatrix(mat) {
   string = string.trimEnd();
   string = string + "\n" + " └─────┴─────┴─────┘";
   console.log(string);
+}
+
+function input(ind) {
+  let m,n;
+  if(ind<10&&ind>0){
+    
+    m=ind/3.5;
+    m=parseInt(m);
+    n=(ind-1)%3;
+
+  mat[m][n]="X";
+  }
 }
 
 
