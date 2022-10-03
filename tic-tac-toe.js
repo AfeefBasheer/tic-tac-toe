@@ -1,6 +1,14 @@
+import readline from "readline";
+
 let states = ["X", "O", "-"];
 let mat = [];
 createMatrix();
+printMatrix(mat);
+ input();
+
+
+
+
 
 function createMatrix() {
   for (let i = 0; i < 3; i++) {
@@ -30,15 +38,32 @@ function printMatrix(mat) {
   console.log(string);
 }
 
-function input(ind) {
-  let m,n;
-  if(ind<10&&ind>0){
-    
-    m=ind/3.5;
-    m=parseInt(m);
-    n=(ind-1)%3;
+ function input() {
+  let m, n, ind;
 
-  mat[m][n]="X";
+  const read = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  });
+
+  read.question(`Enter position`, handleInput);
+
+  function handleInput(ind) {
+    console.log(ind);
+    if (ind < 10 && ind > 0) {
+      m = ind / 3.5;
+      m = parseInt(m);
+      n = (ind - 1) % 3;
+      if (mat[m][n] == "-") {
+        mat[m][n] = "X";
+      }
+      else{
+        console.log("Enter a valid input");
+        input();
+      }
+    }
+    printMatrix(mat);
+    read.close();
   }
 }
 
