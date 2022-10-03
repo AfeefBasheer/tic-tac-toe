@@ -67,4 +67,16 @@ function printMatrix(mat) {
   }
 }
 
+function getUnfilledCells() {
+  let unfilledCells = [];
 
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      if (mat[i][j] == "-") {
+        let ind = i * 3 + j + 1;
+        unfilledCells.push(ind);
+      }
+    }
+  }
+  return unfilledCells;
+}
