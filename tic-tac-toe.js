@@ -17,8 +17,14 @@ do{
 
 }while(check()=="continue");
 
-await input();
-printMatrix(mat);
+if(check()=="draw"){
+  console.log("MATCH DRAW");
+}else if(check()=="user"){  
+  console.log("YOU WON");
+}else{
+  console.log("COMPUTER WON")
+}
+
 
 
 
