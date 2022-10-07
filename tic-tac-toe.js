@@ -2,12 +2,35 @@ import readline from "readline";
 
 let states = ["X", "O", "-"];
 let mat = [];
+let isUsersTurn=true;
 let unfilledCells;
+
 createMatrix();
 printMatrix(mat);
-await input();
-printMatrix(mat);
 
+do{
+ if(isUsersTurn){
+  await input();
+ }else{
+  //computerInput();
+ }
+
+}while(check()=="continue");
+
+if(check()=="draw"){
+  console.log("MATCH DRAW");
+}else if(check()=="user"){  
+  console.log("YOU WON");
+}else{
+  console.log("COMPUTER WON")
+}
+
+
+
+
+
+
+/* *********************************************************** */
 function createMatrix() {
   for (let i = 0; i < 3; i++) {
     mat[i] = [];
@@ -76,3 +99,13 @@ function getUnfilledCells() {
   }
   return unfilledCells;
 }
+
+function check(){}
+
+function computerInput(){
+  let random=choooseRandomCell();
+  
+}
+
+function choooseARandomCell(){}
+
