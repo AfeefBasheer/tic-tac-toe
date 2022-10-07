@@ -103,9 +103,12 @@ function getUnfilledCells() {
 function check(){}
 
 function computerInput(){
-  let random=choooseRandomCell();
   
 }
 
-function choooseARandomCell(){}
+function chooseRandomCell(indices){
+  let random=Math.floor(Math.random()*indices.length);
+  return indices[random];
+}
+
 
