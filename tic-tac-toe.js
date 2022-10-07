@@ -2,13 +2,11 @@ import readline from "readline";
 
 let states = ["X", "O", "-"];
 let mat = [];
+let unfilledCells;
 createMatrix();
 printMatrix(mat);
- input();
-
-
-
-
+await input();
+printMatrix(mat);
 
 function createMatrix() {
   for (let i = 0; i < 3; i++) {
@@ -38,7 +36,7 @@ function printMatrix(mat) {
   console.log(string);
 }
 
- function input() {
+function input() {
   let m, n, ind;
 
   const read = readline.createInterface({
@@ -46,25 +44,23 @@ function printMatrix(mat) {
     output: process.stdout,
   });
 
-  read.question(`Enter position`, handleInput);
-
-  function handleInput(ind) {
-    console.log(ind);
-    if (ind < 10 && ind > 0) {
-      m = ind / 3.5;
-      m = parseInt(m);
-      n = (ind - 1) % 3;
-      if (mat[m][n] == "-") {
-        mat[m][n] = "X";
+  return new Promise((resolve, reject) => {
+    read.question(`Enter position`, (ind) => {
+      if (ind < 10 && ind > 0) {
+        m = ind / 3.5;
+        m = parseInt(m);
+        n = (ind - 1) % 3;
+        if (mat[m][n] == "-") {
+          mat[m][n] = "X";
+        } else {
+          console.log("Enter a valid input");
+          input();
+        }
       }
-      else{
-        console.log("Enter a valid input");
-        input();
-      }
-    }
-    printMatrix(mat);
-    read.close();
-  }
+      read.close();
+      resolve();
+    });
+  });
 }
 
 function getUnfilledCells() {
