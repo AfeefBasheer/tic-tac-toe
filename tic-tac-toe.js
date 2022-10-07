@@ -2,33 +2,29 @@ import readline from "readline";
 
 let states = ["X", "O", "-"];
 let mat = [];
-let isUsersTurn=true;
-let unfilledCells;
+let isUsersTurn = true;
 
 createMatrix();
 printMatrix(mat);
 
-do{
- if(isUsersTurn){
-  await input();
- }else{
-  //computerInput();
- }
+do {
+  if (isUsersTurn) {
+    await input();
+    isUsersTurn=false;
+  } else {
+    computerInput();
+    isUsersTurn=true;
+  }
+  printMatrix(mat);
+} while (check()=="continue");
 
-}while(check()=="continue");
-
-if(check()=="draw"){
+if (check() == "draw") {
   console.log("MATCH DRAW");
-}else if(check()=="user"){  
+} else if (check() == "user") {
   console.log("YOU WON");
-}else{
-  console.log("COMPUTER WON")
+} else {
+  console.log("COMPUTER WON");
 }
-
-
-
-
-
 
 /* *********************************************************** */
 function createMatrix() {
@@ -70,7 +66,7 @@ function input() {
   return new Promise((resolve, reject) => {
     read.question(`Enter position`, (ind) => {
       if (ind < 10 && ind > 0) {
-        m = ind / 3.5;
+        m = (ind - 1) / 3;
         m = parseInt(m);
         n = (ind - 1) % 3;
         if (mat[m][n] == "-") {
@@ -97,18 +93,22 @@ function getUnfilledCells() {
       }
     }
   }
+
   return unfilledCells;
 }
 
-function check(){}
+function check() {}
 
-function computerInput(){
-  
+function computerInput() {
+  let unFilledCells = getUnfilledCells();
+  let randomCell = chooseRandomCell(unFilledCells);
+  let i = (randomCell - 1) / 3;
+  i = parseInt(i);
+  let j = (randomCell - 1) % 3;
+  mat[i][j] = "O";
 }
 
-function chooseRandomCell(indices){
-  let random=Math.floor(Math.random()*indices.length);
+function chooseRandomCell(indices) {
+  let random = Math.floor(Math.random() * indices.length);
   return indices[random];
 }
-
-
