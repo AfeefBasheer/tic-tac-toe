@@ -1,8 +1,14 @@
 import readline from "readline";
 
-let states = ["X", "O", "-"];
+// let states = ["X", "O", "-"];
+
 let mat = [];
 let isUsersTurn = true;
+let read = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
 
 createMatrix();
 printMatrix(mat);
@@ -10,13 +16,15 @@ printMatrix(mat);
 do {
   if (isUsersTurn) {
     await input();
-    isUsersTurn=false;
+    isUsersTurn = false;
   } else {
     computerInput();
-    isUsersTurn=true;
+    isUsersTurn = true;
   }
   printMatrix(mat);
-} while (check()=="continue");
+} while (check() == "continue");
+
+read.close();
 
 if (check() == "draw") {
   console.log("MATCH DRAW");
@@ -56,15 +64,10 @@ function printMatrix(mat) {
 }
 
 function input() {
-  let m, n, ind;
-
-  const read = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
+  let m, n;
 
   return new Promise((resolve, reject) => {
-    read.question(`Enter position`, (ind) => {
+    read.question(`Enter position`, async (ind) => {
       if (ind < 10 && ind > 0) {
         m = (ind - 1) / 3;
         m = parseInt(m);
@@ -73,10 +76,12 @@ function input() {
           mat[m][n] = "X";
         } else {
           console.log("Enter a valid input");
-          input();
+          await input();
         }
+      } else {
+        console.log("Enter a valid input");
+        await input();
       }
-      read.close();
       resolve();
     });
   });
@@ -97,8 +102,6 @@ function getUnfilledCells() {
   return unfilledCells;
 }
 
-function check() {}
-
 function computerInput() {
   let unFilledCells = getUnfilledCells();
   let randomCell = chooseRandomCell(unFilledCells);
@@ -111,4 +114,69 @@ function computerInput() {
 function chooseRandomCell(indices) {
   let random = Math.floor(Math.random() * indices.length);
   return indices[random];
+}
+
+function check() {
+  let isallcellsfilled = true;
+  //loop through all cells.
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      //check if the element is - set isallcellsfilled=false;
+      if (mat[i][j] == "-") {
+        isallcellsfilled = false;
+        continue;
+      }
+      //getting Cells in the directions.
+      let verticalCells = [];
+      let horizontalCells = [];
+      let AD_diagonalCells = [];
+      let BC_diagonalCells = [];
+
+      for (let k = 0; k < 3; k++) {
+        verticalCells.push(mat[k][j]);
+        horizontalCells.push(mat[i][k]);
+        //A-D DIAGONAL CELLS
+        if (i == j) {
+          AD_diagonalCells.push(mat[k][k]);
+        }
+        //B-C DIAGONAL CELLS
+        if (i + j == 2) {
+          BC_diagonalCells.push(mat[k][2 - k]);
+        }
+      }
+      // let verticalisSame=false;
+      // for (let k = 0; k < 2; k++) {
+      //   if(verticalCells[k]!=verticalCells[k+1]){
+      //     isSame=false;
+      //     break;
+      //   }
+      //   isSame=true;
+
+      // }
+
+      //check if the elements in the cells of that directions are same.
+
+      if (verticalCells.every((el) => verticalCells[0] == el && el != "-")) {
+        return verticalCells[0] == "X" ? "user" : "computer";
+      }
+      if (
+        horizontalCells.every((el) => horizontalCells[0] == el && el != "-")
+      ) {
+        return horizontalCells[0] == "X" ? "user" : "computer";
+      }
+      if (
+        AD_diagonalCells.length &&
+        AD_diagonalCells.every((el) => AD_diagonalCells[0] == el && el != "-")
+      ) {
+        return AD_diagonalCells[0] == "X" ? "user" : "computer";
+      }
+      if (
+        BC_diagonalCells.length &&
+        BC_diagonalCells.every((el) => BC_diagonalCells[0] == el && el != "-")
+      ) {
+        return BC_diagonalCells[0] == "X" ? "user" : "computer";
+      }
+    }
+  }
+  return isallcellsfilled ? "draw" : "continue";
 }
