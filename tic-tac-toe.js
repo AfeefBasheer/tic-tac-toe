@@ -1,8 +1,10 @@
 import readline from "readline";
 
 // let states = ["X", "O", "-"];
+const args=process.argv;
 
 let mat = [];
+const size=args[2];
 let isUsersTurn = true;
 let read = readline.createInterface({
   input: process.stdin,
@@ -36,31 +38,41 @@ if (check() == "draw") {
 
 /* *********************************************************** */
 function createMatrix() {
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < size; i++) {
     mat[i] = [];
-    for (let j = 0; j < 3; j++) {
-      mat[i][j] = "-";
+    for (let j = 0; j < size; j++) {
+      mat[i][j]="-";
     }
   }
 }
 
 function printMatrix(mat) {
-  let string = " ┌─────┬─────┬─────┐" + "\n";
+  let string="";
+  let i,j;
+for(i=0;i<size;i++){
+  string=string+"┌─────";
+}
+string=string+"┐"+"\n"
 
-  for (let i = 0; i < 3; i++) {
-    for (let j = 0; j < 3; j++) {
-      string = string + " |  " + mat[i][j] + " ";
-    }
-    string = string + " |" + "\n";
-    if (i != 2) {
-      string = string + " ├─────┼─────┼─────┤";
-    }
-
-    string = string + "\n";
+for(i=0;i<size;i++){
+  for(j=0;j<size;j++){
+    string=string+"|  "+mat[i][j]+"  ";
   }
-  string = string.trimEnd();
-  string = string + "\n" + " └─────┴─────┴─────┘";
-  console.log(string);
+  string=string+"|"+"\n";
+  if(i!=size-1){
+    for(j=0;j<size;j++){
+          string=string+"├─────";
+    }
+    string=string+"┤"+"\n"
+  }
+}
+
+for(i=0;i<size;i++){
+  string=string+"└─────";
+}
+string=string+"┘"+"\n"
+
+console.log(string);
 }
 
 function input() {
@@ -68,14 +80,14 @@ function input() {
 
   return new Promise((resolve, reject) => {
     read.question(`Enter position`, async (ind) => {
-      if (ind < 10 && ind > 0) {
-        m = (ind - 1) / 3;
+      if (ind <=size*size  && ind > 0) {
+        m = (ind - 1) / size;
         m = parseInt(m);
-        n = (ind - 1) % 3;
+        n = (ind - 1) % size;
         if (mat[m][n] == "-") {
           mat[m][n] = "X";
         } else {
-          console.log("Enter a valid input");
+          console.log("Already filled,Enter a valid input");
           await input();
         }
       } else {
@@ -90,10 +102,10 @@ function input() {
 function getUnfilledCells() {
   let unfilledCells = [];
 
-  for (let i = 0; i < 3; i++) {
-    for (let j = 0; j < 3; j++) {
+  for (let i = 0; i < size; i++) {
+    for (let j = 0; j < size; j++) {
       if (mat[i][j] == "-") {
-        let ind = i * 3 + j + 1;
+        let ind = i * size + j + 1;
         unfilledCells.push(ind);
       }
     }
@@ -105,9 +117,9 @@ function getUnfilledCells() {
 function computerInput() {
   let unFilledCells = getUnfilledCells();
   let randomCell = chooseRandomCell(unFilledCells);
-  let i = (randomCell - 1) / 3;
+  let i = (randomCell - 1) / size;
   i = parseInt(i);
-  let j = (randomCell - 1) % 3;
+  let j = (randomCell - 1) % size;
   mat[i][j] = "O";
 }
 
@@ -119,8 +131,8 @@ function chooseRandomCell(indices) {
 function check() {
   let isallcellsfilled = true;
   //loop through all cells.
-  for (let i = 0; i < 3; i++) {
-    for (let j = 0; j < 3; j++) {
+  for (let i = 0; i < size; i++) {
+    for (let j = 0; j < size; j++) {
       //check if the element is - set isallcellsfilled=false;
       if (mat[i][j] == "-") {
         isallcellsfilled = false;
@@ -132,7 +144,7 @@ function check() {
       let AD_diagonalCells = [];
       let BC_diagonalCells = [];
 
-      for (let k = 0; k < 3; k++) {
+      for (let k = 0; k < size; k++) {
         verticalCells.push(mat[k][j]);
         horizontalCells.push(mat[i][k]);
         //A-D DIAGONAL CELLS
@@ -140,8 +152,8 @@ function check() {
           AD_diagonalCells.push(mat[k][k]);
         }
         //B-C DIAGONAL CELLS
-        if (i + j == 2) {
-          BC_diagonalCells.push(mat[k][2 - k]);
+        if (i + j == (size-1)) {
+          BC_diagonalCells.push(mat[k][(size-1) - k]);
         }
       }
       // let verticalisSame=false;
