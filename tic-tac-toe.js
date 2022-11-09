@@ -1,9 +1,10 @@
 import readline from "readline";
 
 // let states = ["X", "O", "-"];
+const args=process.argv;
 
 let mat = [];
-const size=4;
+const size=args[2];
 let isUsersTurn = true;
 let read = readline.createInterface({
   input: process.stdin,
